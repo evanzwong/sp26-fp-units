@@ -65,7 +65,6 @@ class MaxRedu(fptype: AtlasFPType, numLanes: Int = 16, tagWidth: Int = 8) extend
   }
 
   val result = reqReg.aVec.reduceTree((a, b) => maxBf16(a, b))
-  val zeroVal  = 0.U(w.W)
 
   // Tree Reduction 
   // reduceTree recursively groups the vector into a balanced binary tree,
@@ -74,5 +73,5 @@ class MaxRedu(fptype: AtlasFPType, numLanes: Int = 16, tagWidth: Int = 8) extend
   io.resp.bits.tag := reqReg.tag
   io.resp.bits.whichBank := reqReg.whichBank
   io.resp.bits.wRow := reqReg.wRow
-  io.resp.bits.result := VecInit(Seq(result) ++ Seq.fill(numLanes - 1)(zeroVal)) 
+  io.resp.bits.result := VecInit(Seq.fill(numLanes)(result)) 
 }
